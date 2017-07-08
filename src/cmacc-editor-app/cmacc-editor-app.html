@@ -1,0 +1,81 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/cmacc-editor-text-input/cmacc-editor-text-input.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="./cmacc-editor-toolbar.html">
+
+<dom-module id="cmacc-editor-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-header-layout>
+      <app-header slot="header" fixed condenses effects="waterfall">
+        <app-toolbar>
+          <div main-title>Common Accord Editor - CmaccLang</div>
+          <cmacc-editor-toolbar></cmacc-editor-toolbar>
+        </app-toolbar>
+      </app-header>
+
+
+      <template is="dom-repeat" items="{{viewlist}}">
+        <cmacc-editor-text-input legal-text="{{item.value.$$text$$}}" check-value="{{item.value.$$text$$}}">
+
+        </cmacc-editor-text-input>
+      </template>
+    </app-header-layout>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class CmaccEditorApp extends Polymer.Element {
+        static get is() { return 'cmacc-editor-app'; }
+        static get properties() {
+          return {
+            viewlist:{
+                type:Array
+            }
+
+          };
+        }
+
+        ready(){
+            super.ready()
+            this._fillViewList();
+        }
+
+        _fillViewList (){
+            var cmacc = require('cmacc-compiler')
+            var path = require('path')
+
+            var ast = cmacc.compile("file://" + path.join(__dirname,"./cmacc/aggregator.cmacc"))
+            var keys = Object.keys(ast)
+
+            const filter1 = function(arg) {
+                if(!(/\$\$[a-z]+\$\$/g).test(arg)) return arg
+            }
+            const filter2 = function(arg) {
+                if(ast[arg].__proto__.constructor.name !== 'str') return arg
+            }
+            const mapper = function(arg){
+                return {key:arg, value:ast[arg]}
+            }
+
+            this.viewlist = keys.filter(filter1).filter(filter2).map(mapper);
+        }
+
+    }
+
+    window.customElements.define(CmaccEditorApp.is, CmaccEditorApp);
+  </script>
+</dom-module>

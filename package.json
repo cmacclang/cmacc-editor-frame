@@ -1,0 +1,19 @@
+{
+  "name": "cmacc-editor",
+  "version": "1.0.0",
+  "description": "the cmacc editor",
+  "scripts":{
+    "start": "./node_modules/.bin/electron ."
+
+  },
+  "main": "main.js",
+  "author": "axel scheele",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^1.6.11"
+  },
+  "dependencies": {
+    "cmacc-compiler": "^1.0.17",
+    "simple-git": "^1.73.0"
+  }
+}

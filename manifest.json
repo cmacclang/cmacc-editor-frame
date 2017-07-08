@@ -1,0 +1,6 @@
+{
+  "name": "cmacc-editor",
+  "short_name": "cmacc-editor",
+  "start_url": "/",
+  "display": "standalone"
+}

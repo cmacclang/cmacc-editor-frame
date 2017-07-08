@@ -1,0 +1,12 @@
+$ hi = "hello"
+
+$ hello = [./notes.cmacc] => {
+    what:hi
+};
+
+$ omni = [./omnibusresolutions.cmacc]
+
+# agreement
+{{hello}}
+
+{{omni}}
